@@ -66,7 +66,7 @@ public class Config {
     }
 
     @Bean
-    RestTemplate getrestTemplate(){
+            RestTemplate getRestTemplate(){
         return new RestTemplate();
     }
 }
