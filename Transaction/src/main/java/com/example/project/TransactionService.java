@@ -54,7 +54,7 @@ public class TransactionService {
 
 
     @KafkaListener(topics = "update_transaction",groupId = "friends_group")
-    public void updateTransaction(String message) throws JsonProcessingException{
+    public String updateTransaction(String message) throws JsonProcessingException{
         //Decode the message
         JSONObject transactionRequest = objectMapper.readValue(message,JSONObject.class);
 
@@ -69,11 +69,11 @@ public class TransactionService {
         transactionRepository.save(transaction);
 
         //Call Notification Service and Send Emails
-        callNotificationService(transaction);
+        return callNotificationService(transaction);
     }
 
 
-    private void callNotificationService(Transaction transaction) {
+    private String callNotificationService(Transaction transaction) {
         String fromUserName = transaction.getFromUser();
         String toUserName = transaction.getToUser();
         String transactionId = transaction.getTransactionId();
@@ -92,8 +92,8 @@ public class TransactionService {
 
         JSONObject toUserObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JSONObject.class).getBody();
 
-        String receiverName = (String) fromUserObject.get("name");
-        String receiverEmail = (String) fromUserObject.get("email");
+        String receiverName = (String) toUserObject.get("name");
+        String receiverEmail = (String) toUserObject.get("email");
 
         //Send the email and message to notifications-service via kafka
         JSONObject emailRequest = new JSONObject();
@@ -115,7 +115,7 @@ public class TransactionService {
 
 
         if(transaction.getTransactionStatus().equals("FAILED")){
-            return;
+            return "Transaction has been failed.";
         }
 
         //Send an email to the receiver also
@@ -133,5 +133,6 @@ public class TransactionService {
         message = emailRequest.toString();
 
         kafkaTemplate.send("send_email",message);
+        return "Transaction has been successful.";
     }
 }

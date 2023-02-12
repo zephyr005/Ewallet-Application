@@ -71,23 +71,25 @@ public class UserService {
         redisTemplate.expire(key, Duration.ofHours(12));
     }
 
-    public User findUserByUserName(String userName) {
-        //1. Find in the redis cache
+    public User findUserByUserName(String userName){
+
+        //1. find in the redis cache
         Map map = redisTemplate.opsForHash().entries(userName);
 
+        User user = null;
         //If not found in the redis/map
-        if(map == null){
-            //Find in the DB(userRepo)
-            User user = userRepository.findUserByUserName(userName);
+        if(map==null){
 
-            //Save that user in to the cache
+            //Find the userObject from the userRepo
+            user = userRepository.findByUserName(userName);
+            //Save that found user in the cache
             saveInCache(user);
             return user;
-        }
-        else{
-            //We found out the user
-            User user = objectMapper.convertValue(map,User.class);
+        }else{
+            //We found out the User object
+            user = objectMapper.convertValue(map, User.class);
             return user;
+
         }
     }
 
@@ -99,7 +101,7 @@ public class UserService {
         //If not found in the redis/map
         if(map == null){
             //Find in the DB(userRepo)
-            user = userRepository.findUserByUserName(userName);
+            user = userRepository.findByUserName(userName);
 
             //Save that user in to the cache
             saveInCache(user);
@@ -111,6 +113,11 @@ public class UserService {
 
         UserResponseDTO userResponseDTO = UserResponseDTO.builder().email(user.getEmail()).name(user.getName()).build();
         return userResponseDTO;
+//        User user = userRepository.findByUserName(userName);
+//
+//        UserResponseDto userResponseDto = UserResponseDto.builder().email(user.getEmail()).name(user.getName()).build();
+//
+//        return userResponseDto;
 
     }
 }
