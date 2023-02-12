@@ -27,4 +27,9 @@ public class UserController {
     public UserResponseDTO getEmailNameDTO(@PathVariable("userName") String userName){
         return userService.findEmailNameDTO(userName);
     }
+
+    @GetMapping("/findUser/{id}")
+    User getUserByUserName(@PathVariable("id")Integer id){
+        return userService.findUserById(id);
+    }
 }

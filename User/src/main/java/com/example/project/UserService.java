@@ -113,11 +113,10 @@ public class UserService {
 
         UserResponseDTO userResponseDTO = UserResponseDTO.builder().email(user.getEmail()).name(user.getName()).build();
         return userResponseDTO;
-//        User user = userRepository.findByUserName(userName);
-//
-//        UserResponseDto userResponseDto = UserResponseDto.builder().email(user.getEmail()).name(user.getName()).build();
-//
-//        return userResponseDto;
 
+    }
+
+    public User findUserById(Integer id) {
+        return userRepository.findById(id).get();
     }
 }
