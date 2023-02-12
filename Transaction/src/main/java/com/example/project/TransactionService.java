@@ -99,8 +99,10 @@ public class TransactionService {
         JSONObject emailRequest = new JSONObject();
         emailRequest.put("email",senderEmail);
 
-        String senderMessageBody = String.format("Hi %s \n" +
-                "The amount of Rs. %d with transactionId %s has been debited %s. ",
+        String senderMessageBody = String.format("Hi %s \n\n" +
+                "The amount of Rs. %d with transactionId %s has been debited %s. \n\n\n\n\n" +
+                        "Thank You \n"+
+                        "Ewallet Team",
                 senderName,transaction.getAmount(),transactionId,transaction.getTransactionStatus());
 
         emailRequest.put("message",senderMessageBody);
@@ -119,8 +121,10 @@ public class TransactionService {
         //Send an email to the receiver also
         emailRequest.put("email",receiverEmail);
 
-        String receiverMessageBody = String.format("Hi %s /n" +
-                "You have received money %d from %s",
+        String receiverMessageBody = String.format("Hi %s \n\n" +
+                "You have received money %d from %s. \n\n\n\n\n" +
+                        "Thank You \n"+
+                        "Ewallet Team",
                 receiverName,transaction.getAmount(),senderName);
 
 

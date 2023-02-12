@@ -12,7 +12,7 @@ public class UserController {
 
     //Add user
     @PostMapping("/add")
-    public String createUser(UserRequestDTO userRequestDTO){
+    public String createUser(@RequestBody UserRequestDTO userRequestDTO){
         return userService.addUser(userRequestDTO);
     }
 
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     //Find email and name response DTO
-    @GetMapping("/findEmailNameDTO/{userName")
+    @GetMapping("/findEmailNameDTO/{userName}")
     public UserResponseDTO getEmailNameDTO(@PathVariable("userName") String userName){
         return userService.findEmailNameDTO(userName);
     }

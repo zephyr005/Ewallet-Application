@@ -33,7 +33,7 @@ public class EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
-        mimeMessageHelper.setFrom("rajkumar.rbj20@gmail.com");
+        mimeMessageHelper.setFrom("ewalletbackendproject@gmail.com");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setText(messageBody);
         mimeMessageHelper.setSubject("Ewallet Transaction Status");
